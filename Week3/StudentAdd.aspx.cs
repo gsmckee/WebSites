@@ -24,45 +24,20 @@ public partial class StudentAdd : System.Web.UI.Page
         using (conn = new MySqlConnection(connStr))
         {
             conn.Open();
-            //Response.Write("Hello World");
+
             if (conn.State == System.Data.ConnectionState.Open)
             {
                 fName = tbF_name.Text;
                 lName = tbL_name.Text;
-                string tblSearch = @"select * from Students where firstName = '" + fName + "' and lastName= '" + lName + "';";
-                
+                //string tblSearch = @"select * from Students where firstName = '" + fName + "' and lastName= '" + lName + "';";
+
+                //MySqlCommand comm = new MySqlCommand(tblSearch, conn);
+                //MySqlDataReader rdr = comm.ExecuteReader();
+                string query = @"insert into Students (firstName, lastName) values('" + fName + "', '" + lName + "');";
+                MySqlCommand cmd = new MySqlCommand(query, conn);
                 try
                 {
-                    MySqlCommand comm = new MySqlCommand(tblSearch, conn);
-                    MySqlDataReader rdr = comm.ExecuteReader();
-                    while (rdr.Read())
-                    {
-                        if (!rdr.Read().Equals(fName) && !rdr.Read().Equals(lName))
-                        {
-                            String query = @"insert into Students (firstName, lastName) values('" + fName + "', '" + lName + "');";
-                            MySqlCommand cmd = new MySqlCommand(query, conn);
-                            try
-                            {
-                                cmd.ExecuteNonQuery();
-                                Response.Redirect("Default.aspx");
-                            }
-                            catch (Exception ex)
-                            {
-                                string error = ex.Message;
-                                Session["LastError"] = error;
-                                Response.Redirect("Error.aspx");
-                                return;
-                            }
-                            finally
-                            {
-                                conn.Close();
-                            }
-                        }
-                        else
-                        {
-                            Response.Write("A student by the name of " + fName + " " + lName + " already exists.");
-                        }
-                    }
+                    cmd.ExecuteNonQuery();
                 }
                 catch (Exception ex)
                 {
@@ -73,6 +48,8 @@ public partial class StudentAdd : System.Web.UI.Page
                 }
                 finally
                 {
+
+                    Response.Redirect("Default.aspx");
                     conn.Close();
                 }
             }
@@ -82,6 +59,6 @@ public partial class StudentAdd : System.Web.UI.Page
                 Response.Write(conn.State.ToString() + "</br>");
             }
         }
-        
+
     }
 }

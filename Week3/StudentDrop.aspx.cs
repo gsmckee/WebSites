@@ -31,7 +31,7 @@ public partial class StudentDrop : System.Web.UI.Page
                 Response.Write("Connection established.");
                 f_Name = tbF_name.Text;
                 l_Name = tbL_name.Text;
-                String query = @"delete from Students where firstName = '" + f_Name + "' and lastName = '" + l_Name + "'";
+                String query = @"delete from Students where firstName = '" + f_Name + "' and lastName = '" + l_Name + "';";
                 MySqlCommand cmd = new MySqlCommand(query, conn);
                 try
                 {
