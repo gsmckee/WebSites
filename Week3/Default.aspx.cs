@@ -10,16 +10,13 @@ using MySql.Data.Entity;
 public partial class _Default : System.Web.UI.Page
 {
     MySqlConnection conn;
-    bool m_connOpen;
     protected void Page_Load(object sender, EventArgs e)
     {
-        m_connOpen = false;
         String connString = "Database = OurBoard; Data Source = localhost; Uid = root; SslMode = none;";
         conn = new MySqlConnection(connString);
         try
         {
             conn.Open();
-            m_connOpen = true;
             if (conn.State == System.Data.ConnectionState.Open)
             {
                 Response.Write("Connection established.");
@@ -78,13 +75,11 @@ public partial class _Default : System.Web.UI.Page
 
     protected void fullProfile_Click(object sender, EventArgs e)
     {
-        m_connOpen = false;
-        String connString = (String)Session["MySqlConnection"];
+        string connString = (String)Session["MySqlConnection"];
         conn = new MySqlConnection(connString);
         try
         {
             conn.Open();
-            m_connOpen = true;
             if (conn.State == System.Data.ConnectionState.Open)
             {
                 String query = "select * from students left join gpa on students.student_id = gpa.student_id;";
@@ -126,5 +121,15 @@ public partial class _Default : System.Web.UI.Page
         {
             conn.Close();
         }
+    }
+
+    protected void addCourse_Click(object sender, EventArgs e)
+    {
+
+    }
+
+    protected void changeStud_Click(object sender, EventArgs e)
+    {
+        Response.Redirect("UpdateEntry.aspx");
     }
 }
